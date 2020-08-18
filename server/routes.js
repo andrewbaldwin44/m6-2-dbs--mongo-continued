@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {
   getSeats,
   bookSeat,
+  updateUser,
 } = require('./handlers');
 
 let state;
@@ -54,7 +55,9 @@ router.get("/api/seat-availability", async (req, res) => {
 let lastBookingAttemptSucceeded = false;
 
 router.post("/api/book-seat", async (req, res) => {
-  const { seatId, creditCard, expiration } = req.body;
+  const { seatId, fullName, email, creditCard, expiration } = req.body;
+
+  updateUser(fullName, email, seatId);
 
   if (!state) {
     state = {

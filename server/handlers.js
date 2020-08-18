@@ -56,7 +56,35 @@ async function bookSeat(_id) {
   }
 }
 
+
+async function updateUser(fullName, email, seatID) {
+  try {
+    const client = await MongoClient(MONGO_URI, { useUnifiedTopology: true });
+
+    await client.connect();
+
+    const database = client.db('seat_booking');
+
+    const databaseResponse = await database.collection("users").insertOne({
+      fullName,
+      email,
+      bookedSeats: { [seatID]: true },
+    });
+
+    assert.equal(1, databaseResponse.insertedCount);
+
+    client.close();
+
+    return
+  }
+  catch ({ message }) {
+    console.log(message);
+    throw new Error(message);
+  }
+}
+
 module.exports = {
   getSeats,
   bookSeat,
+  updateUser,
 };
