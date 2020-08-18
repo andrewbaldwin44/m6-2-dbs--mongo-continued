@@ -1,5 +1,8 @@
 const router = require("express").Router();
-const { getSeats } = require('./handlers');
+const {
+  getSeats,
+  bookSeat,
+} = require('./handlers');
 
 let state;
 
@@ -83,7 +86,7 @@ router.post("/api/book-seat", async (req, res) => {
 
   lastBookingAttemptSucceeded = !lastBookingAttemptSucceeded;
 
-  state.bookedSeats[seatId] = true;
+  await bookSeat(seatId);
 
   return res.status(200).json({
     status: 200,
