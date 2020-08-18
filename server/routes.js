@@ -2,6 +2,8 @@ const router = require("express").Router();
 const {
   getSeats,
   bookSeat,
+  createUser,
+  updateBooking,
   updateUser,
 } = require('./handlers');
 
@@ -57,7 +59,7 @@ let lastBookingAttemptSucceeded = false;
 router.post("/api/book-seat", async (req, res) => {
   const { seatId, fullName, email, creditCard, expiration } = req.body;
 
-  updateUser(fullName, email, seatId);
+  createUser(fullName, email, seatId);
 
   if (!state) {
     state = {
@@ -96,5 +98,8 @@ router.post("/api/book-seat", async (req, res) => {
     success: true,
   });
 });
+
+router.put("/api/book-seat", updateBooking)
+router.put("/users", updateUser)
 
 module.exports = router;
